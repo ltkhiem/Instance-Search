@@ -108,7 +108,7 @@ fprintf('Creating and searching an inverted file\n');
 if exist('inverted_file.mat', 'file')
     load('inverted_file.mat');
 else
-    if_weight = 'none';
+    if_weight = 'tfidf';
     if_norm = 'l2';
     if_dist = 'l2';
     inv_file = ccvInvFileInsert([], words, num_words);
@@ -164,5 +164,14 @@ for k=1:length(q_files)
     system(script);
 end
 
+q_files = dir(fullfile('.\result\', '*.txt'));
+acc = [];
+for i=1:length(q_files)
+    file = ['.\result\' q_files(i).name];
+    fid = fopen(file, 'r');
+    acc = [acc fscanf(fid, '%f')];
+    fclose(fid);
+end
+mean(acc)
 % clear inv file
 ccvInvFileClean(inv_file);
